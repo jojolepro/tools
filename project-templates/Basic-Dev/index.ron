@@ -1,0 +1,5 @@
+[
+    "__Cargo__.toml",
+    "src/main.rs",
+    "resources/display_config.ron",
+]

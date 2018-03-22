@@ -1,0 +1,7 @@
+[package]
+name = "__project_name__"
+version = "0.1.0"
+authors = []
+
+[dependencies]
+amethyst = { git = "https://github.com/amethyst/amethyst" branch = "develop" }

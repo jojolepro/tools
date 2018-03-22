@@ -13,6 +13,7 @@ extern crate serde_derive;
 extern crate serde_json;
 
 pub use new::New;
+pub use templates::list_templates;
 
 pub mod error;
 pub use fetch::get_latest_version;

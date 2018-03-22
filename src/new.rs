@@ -69,6 +69,24 @@ impl New {
         // Append the amethyst's version to the dependencies
         writeln!(cargo_file,"{}",amethyst_dep).chain_err(|| format!("Failed to write to Cargo.toml"))?;
 
+
+
+        /*let (_version, files) = get_template(&self.version)?;
+        for &(path, content) in files.iter() {
+            let path = match path {
+                "__Cargo__.toml" => "Cargo.toml",
+                path => path,
+            };
+            let content = content.replace("__project_name__", &self.project_name);
+            let path: PathBuf = [&self.project_name, path].iter().collect();
+            create_dir_all(path.parent().expect("Path has no parent"))?;
+            File::create(&path)
+                .chain_err(|| format!("failed to create file {:?}", &path))?
+                .write_all(content.as_bytes())
+                .chain_err(|| format!("could not write contents to file {:?}", &path))?;
+        }*/
+
+
         Ok(())
     }
 }

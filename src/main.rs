@@ -19,7 +19,20 @@ Planned features
 
 Add System
 Add Component
+Add Bundle
+List Systems
+List Components
+List Bundles
 
+Select Template
+List templates
+
+
+e.g
+Empty V 0.6
+Empty Dev branch
+Platformer V 0.6
+FPS dev branch
 
 */
 
@@ -41,9 +54,17 @@ fn main() {
                     Arg::with_name("amethyst_version")
                         .short("V")
                         .long("version")
-                        .value_name("AMETHYST_VERSION")
+                        .value_name("VERSION")
                         .takes_value(true)
                         .help("The requested version of Amethyst from crates.io"),
+                )
+                .arg(
+                    Arg::with_name("template")
+                        .short("t")
+                        .long("template")
+                        .value_name("TEMPLATE")
+                        .takes_value(true)
+                        .help("The template to base the project on"),
                 )
                 .arg(
                     Arg::with_name("git")
@@ -52,6 +73,10 @@ fn main() {
                         .value_names(&["REPO","BRANCH"])
                         .help("Enables the use of git when configuring the amethyst version.")
                 )
+        )
+        .subcommand(
+            SubCommand::with_name("list-templates")
+                .about("Prints the list of templates.")
         )
         .subcommand(
             SubCommand::with_name("update")
@@ -69,6 +94,7 @@ fn main() {
     match matches.subcommand() {
         ("new", Some(args)) => exec_new(args),
         ("update", Some(args)) => exec_update(args),
+        ("list-templates",Some(args)) => cli::list_templates(),
         _ => eprintln!("WARNING: subcommand not tested. This is a bug."),
     }
 }
