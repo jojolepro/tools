@@ -1,6 +1,7 @@
 # Unwanted files
 target
 Cargo.lock
+.idea
 
 # Backup files
 .DS_Store

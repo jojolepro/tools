@@ -11,6 +11,20 @@ use std::process::exit;
 use amethyst_cli as cli;
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 
+
+
+/*
+
+Planned features
+
+Add System
+Add Component
+
+
+*/
+
+
+
 fn main() {
     let matches = App::new("Amethyst CLI")
         .author("Created by Amethyst developers")
@@ -22,16 +36,22 @@ fn main() {
                 .arg(
                     Arg::with_name("project_name")
                         .help("The directory name for the new project")
-                        .required(true),
                 )
                 .arg(
                     Arg::with_name("amethyst_version")
-                        .short("a")
-                        .long("amethyst")
+                        .short("V")
+                        .long("version")
                         .value_name("AMETHYST_VERSION")
                         .takes_value(true)
-                        .help("The requested version of Amethyst"),
-                ),
+                        .help("The requested version of Amethyst from crates.io"),
+                )
+                .arg(
+                    Arg::with_name("git")
+                        .short("g")
+                        .long("git")
+                        .value_names(&["REPO","BRANCH"])
+                        .help("Enables the use of git when configuring the amethyst version.")
+                )
         )
         .subcommand(
             SubCommand::with_name("update")
@@ -54,15 +74,17 @@ fn main() {
 }
 
 fn exec_new(args: &ArgMatches) {
-    let project_name = args.value_of("project_name")
-        .expect("Bug: project_name is required");
-    let project_name = project_name.to_owned();
+    let project_name = args.value_of("project_name").map(|name| name.to_owned());
     let version = args.value_of("amethyst_version").map(|v| v.to_owned());
+    let git = args.values_of("git");
 
-    let n = cli::New {
-        project_name,
-        version,
-        ..Default::default()
+    let n = if let Some(g) = git{
+        let mut vec = g.map(|e|e.to_owned()).collect::<Vec<String>>();
+        let repo = vec.swap_remove(0);
+        let branch = vec.swap_remove(0);
+        cli::New::from_git(project_name,version,repo,branch)
+    }else{
+        cli::New::new(project_name,version)
     };
 
     if let Err(e) = n.execute() {
