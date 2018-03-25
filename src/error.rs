@@ -17,6 +17,11 @@ error_chain! {
             display("This version of amethyst_tools does not support the requested version {:?}", version)
         }
 
+        UnknownTemplate(template_name: String) {
+            description("Unknown template name requested")
+            display("The template name you requested has not been found: {}. See amethyst list-templates.", template_name)
+        }
+
         /// Failed to fetch `amethyst` crate version from crates.io
         FetchVersionFailure {
             description("Failed to fetch latest version of amethyst")

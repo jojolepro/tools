@@ -12,25 +12,26 @@ mod external {
 
 pub fn get_template(
     name: String,
-) -> Result<String> {
+) -> Result<(String,Vec<(&'static str,&'static str)>)> {
     // Get the correct template
-    let version = templates()
-        .filter(|n| n.matches(name))
-        .max()
-    let ver_str = format!("v{}.{}", version.major, version.minor);
-    eprintln!("Using template for version {:?}", ver_str);
+    /*let template_name = templates()
+        .iter()
+        .filter(|n| **n == name)
+            .max();*/
+
     let template_map = external::template_files();
-    match template_map.get::<str>(&ver_str) {
-        Some(ref v) => Ok((ver_str.get(1..).unwrap().to_owned(), (*v).clone())),
-        None => Err(ErrorKind::UnsupportedVersion(ver_str).into()),
+    match template_map.get::<str>(&name) {
+        Some(ref v) => Ok((name, (*v).clone())),
+        None => Err(ErrorKind::UnknownTemplate(name).into()),
     }
 }
 
 
 // move somewhere else
-pub fn get_amethyst_version() -> Result<String,()> {
+pub fn get_amethyst_version() -> Result<String> {
     // checks in Cargo.toml and returns the amethyst version.
     // used by some amethyst-tool functions to detect if a code generation template can be applied to this amethyst version or not.
+    unimplemented!()
 }
 
 

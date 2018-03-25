@@ -22,7 +22,7 @@ fn read_template_index<P: AsRef<Path>>(p: P) -> Vec<String> {
 }
 
 fn main() {
-    let f = PathBuf::from(path("CARGO_MANIFEST_DIR", "templates"));
+    let f = PathBuf::from(path("CARGO_MANIFEST_DIR", "project-templates"));
     let indices = read_dir(&f).unwrap().map(Result::unwrap).map(|v| {
         (
             v.file_name().into_string().unwrap(),
@@ -42,7 +42,7 @@ pub fn template_files() -> HashMap<&'static str, Vec<(&'static str, &'static str
         source_code.push_str(&index.iter().fold("vec![".to_owned(), |s, file| {
             format!(
                 "{}({:?}, include_str!(concat!(env!(\"CARGO_MANIFEST_DIR\"),\
-                 concat!(\"/templates/\", concat!(concat!({:?}, \"/\"), {:?}))))), ",
+                 concat!(\"/project-templates/\", concat!(concat!({:?}, \"/\"), {:?}))))), ",
                 s, file, version, file,
             )
         }));
